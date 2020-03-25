@@ -3,14 +3,6 @@ import { StyleSheet, SafeAreaView, View } from "react-native";
 import { connect } from "react-redux";
 import { handleGetAllDecks } from "../store/actions/decks";
 
-// const Main = ({ children }) => (
-//   <SafeAreaView style={styles.container}>
-//     <KeyboardAvoidingView style={styles.content} behavior="padding">
-//       {children}
-//     </KeyboardAvoidingView>
-//   </SafeAreaView>
-// );
-
 class Main extends React.Component {
   componentDidMount() {
     this.props.initilizeData();

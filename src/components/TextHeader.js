@@ -9,10 +9,12 @@ const TextHeader = ({ style, children }) => (
 const styles = StyleSheet.create({
   header: {
     fontSize: 18,
-    color: theme.colors.primary,
+    color: theme.colors.font,
     fontWeight: "bold",
     paddingTop: 16,
-    paddingBottom: 4
+    paddingBottom: 4,
+    backgroundColor:theme.colors.primary
+
   }
 });
 
