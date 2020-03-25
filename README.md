@@ -1,4 +1,5 @@
-##intall
-1. clone repo
-2. yarn install
-3. yarn start
+## Install
+1. git https://github.com/miladezzat/udacity-falshcards.git
+2. cd udacity-falshcards
+3. yarn install
+4. yarn start
