@@ -23,6 +23,6 @@
       "**/*"
     ],
     "description": "Udacity Mobile Flash Cards is the 3rd project for the React Nano degree. It uses react native to build a mobile app that allows you to add decks, add cards to the decks and quiz yourself for a test/exam.",
-    "githubUrl": "https://github.com/cangir/mobile-flashcards"
+    "githubUrl": "https://github.com/miladezzat/udacity-falshcards.git"
   }
 }
