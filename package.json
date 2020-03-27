@@ -35,5 +35,11 @@
   "devDependencies": {
     "babel-preset-expo": "^7.1.0"
   },
-  "private": true
+  "private": true,
+  "name": "mobile-flashcards",
+  "version": "1.0.0",
+  "description": "This is a project for nonodegree program on udacity",
+  "repository": "https://github.com/miladezzat/udacity-falshcards.git",
+  "author": "Milad E. Fahmy <miladezzat.f@gmail.com>",
+  "license": "MIT"
 }
