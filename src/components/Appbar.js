@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Appbar } from "react-native-paper";
-import { DrawerActions } from "react-navigation-drawer";
 
 const Header = ({ menu, title, navigation }) => (
   <Appbar.Header>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, SafeAreaView, View } from "react-native";
+import { StyleSheet, SafeAreaView, View, KeyboardAvoidingView } from "react-native";
 import { connect } from "react-redux";
 import { handleGetAllDecks } from "../store/actions/decks";
 
@@ -11,9 +11,9 @@ class Main extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.container} behavior="padding">
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
           {this.props.children}
-        </View>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }

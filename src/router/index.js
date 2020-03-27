@@ -1,44 +1,44 @@
-import React from "react";
-import { createAppContainer } from "react-navigation";
+import React from 'react'
+import { createAppContainer } from 'react-navigation'
 
-import { Appbar } from "../components";
+import { Appbar } from '../components'
 
-import { DeckAdd, DeckSingle, CardAdd, Quiz } from "../screens";
-import { createStackNavigator } from "react-navigation-stack";
-import NavigationDrawer from "./NavigationDrawer";
+import { DeckAdd, DeckSingle, CardAdd, Quiz } from '../screens'
+import { createStackNavigator } from 'react-navigation-stack'
+import NavigationDrawer from './NavigationDrawer'
 
 const screens = {
   DeckAdd: {
     screen: DeckAdd,
-    title: "Add New Deck"
+    title: 'Add New Deck'
   },
   DeckSingle: {
     screen: DeckSingle,
-    title: "Deck Single"
+    title: 'Deck Single'
   },
   CardAdd: {
     screen: CardAdd,
-    title: "Add New Card"
+    title: 'Add New Card'
   },
   Quiz: {
     screen: Quiz,
-    title: "Quiz"
+    title: 'Quiz'
   }
-};
+}
 
 const routes = Object.keys(screens)
   .map(id => ({ id, item: screens[id] }))
   .reduce((acc, { id, item }) => {
-    const Comp = item.screen;
-    const Screen = props => <Comp {...props} />;
+    const Comp = item.screen
+    const Screen = props => <Comp {...props} />
     Screen.navigationOptions = ({ navigation }) => ({
       header: <Appbar menu={false} title={item.title} navigation={navigation} />
-    });
+    })
     return {
       ...acc,
       [id]: { screen: Screen }
-    };
-  }, {});
+    }
+  }, {})
 
 const NavigationStack = createStackNavigator(
   {
@@ -48,7 +48,7 @@ const NavigationStack = createStackNavigator(
         header: (
           <Appbar
             menu={true}
-            title="Mobile Flashcards"
+            title='Mobile Flashcards'
             navigation={navigation}
           />
         )
@@ -57,10 +57,10 @@ const NavigationStack = createStackNavigator(
     ...routes
   },
   {
-    initialRouteName: "Drawer"
+    initialRouteName: 'Drawer'
   }
-);
+)
 
-const Router = createAppContainer(NavigationStack);
+const Router = createAppContainer(NavigationStack)
 
-export default Router;
+export default Router

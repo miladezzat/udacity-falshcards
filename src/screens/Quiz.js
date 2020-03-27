@@ -1,15 +1,16 @@
-import React from "react";
+import React from 'react'
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp
-} from "react-native-responsive-screen";
-import { StyleSheet, View, TouchableOpacity, Animated } from "react-native";
-import { Colors, FAB, Text } from "react-native-paper";
-import { Main, Button, TextHeader, Paragraph } from "../components";
-import CardFlip from "react-native-card-flip";
-import { connect } from "react-redux";
-import { handleDeleteDeck } from "../store/actions/decks";
-import { clearLocalNotification, setLocalNotification } from "../utils/helper";
+} from 'react-native-responsive-screen'
+import { StyleSheet, View, TouchableOpacity, Animated } from 'react-native'
+import { Colors, FAB, Text } from 'react-native-paper'
+import { Main, Button, TextHeader, Paragraph } from '../components'
+import CardFlip from 'react-native-card-flip'
+import { connect } from 'react-redux'
+import { handleDeleteDeck } from '../store/actions/decks'
+import { clearLocalNotification, setLocalNotification } from '../utils/helper'
+import { theme } from '../utils/theme'
 
 class Quiz extends React.Component {
   state = {
@@ -19,45 +20,49 @@ class Quiz extends React.Component {
     quizCompleted: false,
     viewedAnswer: 0,
     actionsDisabled: false,
-    actionsFadeValue: new Animated.Value(1)
-  };
-
+    actionsFadeValue: new Animated.Value(1),
+    rotate: false
+  }
+  toggle = () => {
+    this.setState(prevState => ({
+      rotate: !prevState.rotate
+    }))
+  }
   _handleActionsFade = () => {
     Animated.timing(this.state.actionsFadeValue, {
       toValue: 0.3,
       duration: 500
-    }).start();
-  };
+    }).start()
+  }
 
-  handleCardFlip() {
+  handleCardFlip () {
     if (!this.state.quizCompleted) {
-      this.card.flip();
+      this.card.flip()
       if (!this.state.cardRotated) {
         this.setState({
           viewedAnswer: ++this.state.viewedAnswer
-        });
-        console.log("view count: " + this.state.viewedAnswer);
+        })
       }
     }
   }
 
-  handleMarkQuestion(isCorrect) {
+  handleMarkQuestion (isCorrect) {
     if (!this.state.quizCompleted) {
-      const updatedQuestionIndex = this.state.questionIndex + 1;
-      this.state.viewedAnswer === 0 && this.handleCardFlip();
-      this._handleActionsFade();
+      const updatedQuestionIndex = this.state.questionIndex + 1
+      this.state.viewedAnswer === 0 && this.handleCardFlip()
+      this._handleActionsFade()
       this.setState({
         actionsDisabled: true
-      });
+      })
 
       setTimeout(
-        function() {
+        function () {
           if (this.props.deck.questions.length != updatedQuestionIndex) {
-            this.handleCardFlip();
-            this._handleActionsFade();
+            this.handleCardFlip()
+            this._handleActionsFade()
           }
           setTimeout(
-            function() {
+            function () {
               this.setState((state, props) => {
                 return {
                   correctCount: isCorrect
@@ -68,47 +73,47 @@ class Quiz extends React.Component {
                     props.deck.questions.length === updatedQuestionIndex,
                   viewedAnswer: 0,
                   actionsDisabled: false
-                };
-              });
+                }
+              })
             }.bind(this),
             400
-          );
+          )
         }.bind(this),
         1000
-      );
+      )
     } else {
-      setupNotificaiton();
+      setupNotificaiton()
     }
   }
 
-  render() {
+  render () {
     if (this.state.quizCompleted) {
-      return this.renderQuizCompleted();
+      return this.renderQuizCompleted()
     } else {
-      return this.renderQuiz();
+      return this.renderQuiz()
     }
   }
 
-  restartQuiz() {
+  restartQuiz () {
     this.setState({
       cardRotated: false,
       correctCount: 0,
       questionIndex: 0,
       quizCompleted: false,
       viewedAnswer: 0
-    });
+    })
     if (!this.state.cardRotated) {
-      this.handleCardFlip();
+      this.handleCardFlip()
     }
   }
 
-  setupNotificaiton() {
-    clearLocalNotification().then(setLocalNotification);
+  setupNotificaiton () {
+    clearLocalNotification().then(setLocalNotification)
   }
 
-  renderQuiz() {
-    const { questions } = this.props.deck;
-    const { questionIndex } = this.state;
+  renderQuiz () {
+    const { questions } = this.props.deck
+    const { questionIndex } = this.state
 
     return (
       <Main>
@@ -117,7 +122,10 @@ class Quiz extends React.Component {
             <TouchableOpacity
               style={[styles.card, styles.card1]}
               activeOpacity={0.9}
-              onPress={() => this.handleCardFlip()}
+              onPress={() => {
+                this.handleCardFlip()
+                this.toggle()
+              }}
             >
               <Text style={[styles.label, styles.label1]}>
                 {questions[questionIndex].question}
@@ -127,7 +135,10 @@ class Quiz extends React.Component {
             <TouchableOpacity
               style={[styles.card, styles.card2]}
               activeOpacity={0.9}
-              onPress={() => this.handleCardFlip()}
+              onPress={() => {
+                this.handleCardFlip()
+                this.toggle()
+              }}
             >
               <Text style={[styles.label, styles.label2]}>
                 {questions[questionIndex].answer}
@@ -135,10 +146,10 @@ class Quiz extends React.Component {
             </TouchableOpacity>
           </CardFlip>
           <Text style={styles.remainingQuestionText}>
-            {this.props.deck.questions.length - questionIndex}{" "}
+            {this.props.deck.questions.length - questionIndex}{' '}
             {this.props.deck.questions.length - questionIndex > 1
-              ? "questions "
-              : "question "}
+              ? 'questions '
+              : 'question '}
             remaining
           </Text>
         </View>
@@ -154,8 +165,11 @@ class Quiz extends React.Component {
             disabled={this.state.actionsDisabled}
             color={Colors.white}
             small
-            icon="rotate-right"
-            onPress={() => this.handleCardFlip()}
+            icon={this.state.rotate ? 'rotate-left' : 'rotate-right'}
+            onPress={() => {
+              this.handleCardFlip()
+              this.toggle()
+            }}
           />
           <FAB
             style={[
@@ -167,7 +181,7 @@ class Quiz extends React.Component {
             ]}
             disabled={this.state.actionsDisabled}
             color={Colors.red500}
-            icon="thumb-down"
+            icon='thumb-down'
             onPress={() => this.handleMarkQuestion(false)}
           />
           <FAB
@@ -179,129 +193,129 @@ class Quiz extends React.Component {
               }
             ]}
             disabled={this.state.actionsDisabled}
-            color={Colors.green500}
-            icon="thumb-up"
+            color={theme.colors.primary}
+            icon='thumb-up'
             onPress={() => this.handleMarkQuestion(true)}
           />
         </View>
       </Main>
-    );
+    )
   }
 
-  renderQuizCompleted() {
+  renderQuizCompleted () {
     return (
       <Main>
         <View style={styles.quizCompletedContainer}>
           <TextHeader style={styles.deckTitle}>Quiz Completed</TextHeader>
           <Paragraph style={styles.deckCardCount}>
-            You have answered{" "}
+            You have answered
             {Math.round(
               (this.state.correctCount / this.props.deck.questions.length) * 100
             )}
             % correct
           </Paragraph>
-          <Button mode="contained" onPress={() => this.restartQuiz()}>
+          <Button mode='contained' onPress={() => this.restartQuiz()}>
             Restart Quiz
           </Button>
 
           <Button
-            mode="outlined"
+            mode='outlined'
             onPress={() => this.props.navigation.goBack()}
           >
             Back to Deck
           </Button>
         </View>
       </Main>
-    );
+    )
   }
 }
 
-function mapStateToProps({ decks }, props) {
-  const { deckId } = props.navigation.state.params;
+function mapStateToProps ({ decks }, props) {
+  const { deckId } = props.navigation.state.params
   // console.log(JSON.stringify(decks));
   return {
     deck: decks[deckId]
-  };
+  }
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps (dispatch) {
   return {
     deleteDeck: deckId => {
-      dispatch(handleDeleteDeck(deckId));
+      dispatch(handleDeleteDeck(deckId))
     }
-  };
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Quiz);
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz)
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: "#4BB6F3"
+    backgroundColor: '#4BB6F3'
   },
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   animatedCardContainer: { flex: 1 },
   cardContainer: {
     flex: 4,
-    alignItems: "center"
+    alignItems: 'center'
   },
   cardFlip: {
     flex: 1,
-    height: hp("100%"),
-    width: wp("100%") - 45,
-    justifyContent: "center",
-    alignItems: "center",
+    height: hp('100%'),
+    width: wp('100%') - 45,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginHorizontal: 20,
     marginTop: 10
   },
   actionContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   card: {
     flex: 1,
     borderRadius: 10,
-    shadowColor: "rgba(0,0,0,0.5)",
+    shadowColor: 'rgba(0,0,0,0.5)',
     shadowOffset: {
       width: 2,
       height: 1
     },
     shadowOpacity: 0.8,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative"
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative'
   },
   card1: {
-    backgroundColor: Colors.purple900
+    backgroundColor: theme.colors.primary
   },
   card2: {
-    backgroundColor: Colors.purple500
+    backgroundColor: theme.colors.secondary
   },
   label: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 24,
     padding: 20,
-    fontFamily: "System"
+    fontFamily: 'System'
   },
   label1: { color: Colors.white },
   label2: { color: Colors.white },
   fab: {
-    position: "absolute",
+    position: 'absolute',
     margin: 60,
     bottom: 0,
     zIndex: 9999,
     borderWidth: 5,
     borderRadius: 50,
-    backgroundColor: "#FFF"
+    backgroundColor: '#FFF'
   },
   fabCenter: {
     marginBottom: 50,
     borderWidth: 0,
-    backgroundColor: Colors.purple500
+    backgroundColor: theme.colors.secondary
   },
   fabLeft: {
     left: 0,
@@ -311,20 +325,20 @@ const styles = StyleSheet.create({
   fabRight: {
     right: 0,
     marginBottom: 20,
-    borderColor: Colors.green500
+    borderColor: theme.colors.primary
   },
   quizCompletedContainer: {
     flex: 1,
     padding: 20,
-    width: "100%",
+    width: '100%',
     maxWidth: 340,
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center"
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   remainingQuestionText: {
     fontSize: 16,
     paddingTop: 20,
     color: Colors.grey500
   }
-});
+})

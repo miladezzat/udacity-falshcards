@@ -1,31 +1,31 @@
-import React from "react";
-import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
-import { Avatar, Card, Divider, Colors, FAB } from "react-native-paper";
-import Main from "../components/Main";
-import { connect } from "react-redux";
-
+import React from 'react'
+import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
+import { Avatar, Card, Divider, Colors, FAB } from 'react-native-paper'
+import Main from '../components/Main'
+import { connect } from 'react-redux'
+import { theme } from '../utils/theme'
 class DeckList extends React.Component {
   state = {
     decks: null
-  };
-
-  onButtonPress() {
-    this.props.navigation.navigate("Details");
   }
 
-  onDeckAdd() {
-    this.props.navigation.navigate("DeckAdd");
+  onButtonPress () {
+    this.props.navigation.navigate('Details')
   }
 
-  onDeckCardPress(deck) {
-    this.props.navigation.navigate("DeckSingle", {
+  onDeckAdd () {
+    this.props.navigation.navigate('DeckAdd')
+  }
+
+  onDeckCardPress (deck) {
+    this.props.navigation.navigate('DeckSingle', {
       deckId: deck.id,
       title: deck.title,
       navigation: this.props.navigation
-    });
+    })
   }
-  render() {
-    const { decks } = this.props;
+  render () {
+    const { decks } = this.props
     return (
       <Main>
         <ScrollView>
@@ -41,7 +41,7 @@ class DeckList extends React.Component {
                     <Avatar.Icon
                       {...props}
                       style={styles.avatarIcon}
-                      icon="folder"
+                      icon='folder'
                       color={Colors.white}
                     />
                   )}
@@ -57,42 +57,43 @@ class DeckList extends React.Component {
               </TouchableOpacity>
             ))}
         </ScrollView>
-        <FAB style={styles.fab} icon="plus" onPress={() => this.onDeckAdd()} />
+        <FAB style={styles.fab} icon='plus' onPress={() => this.onDeckAdd()} />
       </Main>
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF"
+    backgroundColor: '#FFF'
   },
   fab: {
-    position: "absolute",
+    position: 'absolute',
     margin: 16,
     right: 0,
     bottom: 0,
-    backgroundColor: Colors.purple900
+    backgroundColor: theme.colors.primary
   },
   text: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 30,
-    fontWeight: "500"
+    fontWeight: '500'
   },
   avatarIcon: {
-    backgroundColor: Colors.orange500
+    backgroundColor: theme.colors.primary
   },
   avatarText: {
+    color: '#FFF',
     marginRight: 16,
-    backgroundColor: Colors.orange100
+    backgroundColor: theme.colors.secondary
   }
-});
+})
 
-function mapStateToProps({ decks }) {
+function mapStateToProps ({ decks }) {
   return {
     decks
-  };
+  }
 }
 
-export default connect(mapStateToProps)(DeckList);
+export default connect(mapStateToProps)(DeckList)
